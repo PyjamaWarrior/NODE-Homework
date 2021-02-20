@@ -84,7 +84,7 @@ app.get('/users', (req, res) => {
         }
 
         const users = JSON.parse(data.toString());
-        res.render('users', {users: users});
+        res.render('users', {users});
     })
 });
 
