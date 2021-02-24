@@ -39,11 +39,11 @@ module.exports = {
     //     return find;
     //
     // },
-    createUser: async (user) => {
+    createUser: async (user, prefLang) => {
         const data = await fse.readFile(dbPath);
 
         const users = JSON.parse(data.toString());
-        const {username, email, password, prefLang = 'en'} = user;
+        const {username, email, password} = user;
 
         const find = users.find(value => value.email === email);
 
