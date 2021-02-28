@@ -13,6 +13,18 @@ module.exports = {
         }
     },
 
+    getCarById: async (req, res) => {
+        try {
+            const { carId } = req.params;
+
+            const car = await carService.getCarById(carId);
+
+            res.json(car);
+        } catch (e) {
+            res.status(statusCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
     createCar: async (req, res) => {
         try {
             await carService.createCar(req.body);

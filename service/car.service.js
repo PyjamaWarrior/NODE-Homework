@@ -13,6 +13,16 @@ module.exports = {
         return cars;
     },
 
+    getCarById: async carId => {
+        const car = await Car.findById(carId);
+
+        if (!car) {
+            throw new Error(statusMessages.CANT_FIND_USER);
+        }
+
+        return car;
+    },
+
     createCar: async carObject => {
         const cars = await Car.find(carObject);
 

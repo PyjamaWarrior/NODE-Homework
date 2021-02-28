@@ -12,6 +12,16 @@ module.exports = {
         return users;
     },
 
+    getUserById: async userId => {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw new Error(statusMessages.CANT_FIND_USER);
+        }
+
+        return user;
+    },
+
     createUser: async userObject => {
         const { email } = userObject;
 

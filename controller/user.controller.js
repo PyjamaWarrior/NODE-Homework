@@ -13,6 +13,18 @@ module.exports = {
         }
     },
 
+    getUserById: async (req, res) => {
+        try {
+            const { userId } = req.params;
+
+            const user = await userService.getUserById(userId);
+
+            res.json(user);
+        } catch (e) {
+            res.status(statusCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
     createUser: async (req, res) => {
         try {
             await userService.createUser(req.body);
