@@ -14,7 +14,7 @@ module.exports = {
     INVALID_MANUFACTURER_NAME: 'Invalid manufacturer name!',
     INVALID_MODEL_NAME: 'Invalid model name!',
     NOT_VALID_ID: 'Not valid ID!',
-    USER_ALREADY_CREATED: 'User already created!',
+    USER_ALREADY_CREATED: 'User with this email is already exists!',
     USER_CREATED: 'User is successfully created!',
     USER_DELETED: 'User is successfully deleted!',
     USER_UPDATED: 'User is successfully updated!',

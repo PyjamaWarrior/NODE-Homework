@@ -1,5 +1,4 @@
 const Car = require('../dataBase/models/Car');
-require('../dataBase/models/Car');
 const statusMessages = require('../status-messages/stastus.messages');
 
 module.exports = {

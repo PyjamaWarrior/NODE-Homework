@@ -1,7 +1,54 @@
 const statusCodes = require('../constant/statusCodes.enum');
 const statusMessages = require('../status-messages/stastus.messages');
+const userService = require('../service/user.service');
 
 module.exports = {
+    isUserExists: async (req, res, next) => {
+        try {
+            const users = await userService.getUsers(req.query);
+
+            if (!users.length) {
+                throw new Error(statusMessages.CANT_FIND_USER);
+            }
+
+            next();
+        } catch (e) {
+            res.status(statusCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
+    isUserByIdExists: async (req, res, next) => {
+        try {
+            const { userId } = req.params;
+
+            const user = await userService.getUserById(userId);
+
+            if (!user) {
+                throw new Error(statusMessages.CANT_FIND_USER);
+            }
+
+            next();
+        } catch (e) {
+            res.status(statusCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
+    isEmailTaken: async (req, res, next) => {
+        try {
+            const { email } = req.body;
+
+            const users = await userService.getUsers({ email });
+
+            if (users.length) {
+                throw new Error(statusMessages.USER_ALREADY_CREATED);
+            }
+
+            next();
+        } catch (e) {
+            res.status(statusCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
     isUserObjectValid: (req, res, next) => {
         try {
             const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -39,6 +86,7 @@ module.exports = {
             res.status(statusCodes.BAD_REQUEST).json(e.message);
         }
     },
+
     isUserIdValid: (req, res, next) => {
         try {
             const idRegex = /^[a-f\d]{24}$/i;
