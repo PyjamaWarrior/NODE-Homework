@@ -1,0 +1,45 @@
+{
+  "name": "node-homeworks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PyjamaWarrior/NODE-Homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PyjamaWarrior/NODE-Homework/issues"
+  },
+  "homepage": "https://github.com/PyjamaWarrior/NODE-Homework#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.18"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "husky": "^4.3.0",
+    "eslint": "^7.20.0",
+    "lint-staged": "^10.5.4",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  },
+  "lint-staged": {
+    "*.{js, json}": [
+      "eslint",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

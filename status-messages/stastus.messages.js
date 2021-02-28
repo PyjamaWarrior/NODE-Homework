@@ -1,0 +1,22 @@
+module.exports = {
+    CANT_FIND_CAR: 'Can`t find car!',
+    CANT_FIND_USER: 'Can`t find user!',
+    CANT_UPDATE_CAR: 'Can`t update car!',
+    CANT_UPDATE_USER: 'Can`t update user!',
+    CAR_ALREADY_CREATED: 'Car already created!',
+    CAR_CREATED: 'Car is successfully created!',
+    CAR_DELETED: 'Car is successfully deleted!',
+    CAR_UPDATED: 'Car is successfully updated!',
+    INVALID_AGE: 'Invalid age!',
+    INVALID_EMAIL: 'Invalid email format!',
+    INVALID_FIRSTNAME: 'Invalid firstname!',
+    INVALID_LASTNAME: 'Invalid lastname!',
+    INVALID_MANUFACTURER_NAME: 'Invalid manufacturer name!',
+    INVALID_MODEL_NAME: 'Invalid model name!',
+    NOT_VALID_ID: 'Not valid ID!',
+    USER_ALREADY_CREATED: 'User already created!',
+    USER_CREATED: 'User is successfully created!',
+    USER_DELETED: 'User is successfully deleted!',
+    USER_UPDATED: 'User is successfully updated!',
+    WEAK_PASSWORD: 'Weak password!'
+};
