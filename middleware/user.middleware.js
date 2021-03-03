@@ -6,7 +6,7 @@ const { commonValidators, userValidators } = require('../validator');
 module.exports = {
     isUserSearchQueryValid: (req, res, next) => {
         try {
-            const { error } = userValidators.userFilterQueryValidator.validate(req.query);
+            const { error } = userValidators.userSearchQueryValidator.validate(req.query);
 
             if (error) {
                 throw new Error(error.details[0].message);
