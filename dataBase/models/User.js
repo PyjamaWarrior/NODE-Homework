@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const { dataBaseCollectionsEnum: { CAR, USER } } = require('../../constant');
+
 const userScheme = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -18,7 +20,7 @@ userScheme.virtual('fullName').get(function() {
 });
 
 userScheme.virtual('cars', {
-    ref: 'Car',
+    ref: CAR,
     localField: '_cars',
     foreignField: '_id'
 });
@@ -31,4 +33,4 @@ userScheme
         this.populate('cars');
     });
 
-module.exports = model('User', userScheme);
+module.exports = model(USER, userScheme);

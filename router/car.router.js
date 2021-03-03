@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const carController = require('../controller/car.controller');
-const carMiddleware = require('../middleware/car.middleware');
+const { carController } = require('../controller');
+const { carMiddleware } = require('../middleware');
 
-router.get('/', carMiddleware.isCarExists, carController.getCars);
+router.get('/', carMiddleware.isCarSearchQueryValid, carController.getCars);
 
 router.post('/', carMiddleware.isCarObjectValid, carMiddleware.isCarExists, carController.createCar);
 

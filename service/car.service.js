@@ -1,4 +1,4 @@
-const Car = require('../dataBase/models/Car');
+const { Car } = require('../dataBase/models');
 
 module.exports = {
     getCars: filterObject => Car.find(filterObject),

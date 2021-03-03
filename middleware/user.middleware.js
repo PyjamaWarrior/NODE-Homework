@@ -1,19 +1,20 @@
-const statusCodes = require('../constant/statusCodes.enum');
-const statusMessages = require('../status-messages/stastus.messages');
-const userService = require('../service/user.service');
+const { statusCodesEnum } = require('../constant');
+const { userService } = require('../service');
+const { statusMessages } = require('../status-messages');
+const { commonValidators, userValidators } = require('../validator');
 
 module.exports = {
-    isUserExists: async (req, res, next) => {
+    isUserSearchQueryValid: (req, res, next) => {
         try {
-            const users = await userService.getUsers(req.query);
+            const { error } = userValidators.userFilterQueryValidator.validate(req.query);
 
-            if (!users.length) {
-                throw new Error(statusMessages.CANT_FIND_USER);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -29,7 +30,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -45,60 +46,36 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
     isUserObjectValid: (req, res, next) => {
         try {
-            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-            const passwordRegex = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,}$/;
-            const {
-                firstName,
-                lastName,
-                age,
-                email,
-                password
-            } = req.body;
+            const { error } = userValidators.userObjectValidator.validate(req.body);
 
-            if (firstName.length > 255 || typeof firstName !== 'string') {
-                throw new Error(statusMessages.INVALID_FIRSTNAME);
-            }
-
-            if (lastName.length > 255 || typeof lastName !== 'string') {
-                throw new Error(statusMessages.INVALID_LASTNAME);
-            }
-
-            if (age <= 0 || !Number.isInteger(age) || Number.isNaN(age)) {
-                throw new Error(statusMessages.INVALID_AGE);
-            }
-
-            if (!email.match(emailRegex)) {
-                throw new Error(statusMessages.INVALID_EMAIL);
-            }
-
-            if (!password.match(passwordRegex)) {
-                throw new Error(statusMessages.WEAK_PASSWORD);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
     isUserIdValid: (req, res, next) => {
         try {
-            const idRegex = /^[a-f\d]{24}$/i;
             const { userId } = req.params;
+            const { error } = commonValidators.mongodbIdValidator.validate(userId);
 
-            if (!userId.match(idRegex)) {
-                throw new Error(statusMessages.NOT_VALID_ID);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     }
 };

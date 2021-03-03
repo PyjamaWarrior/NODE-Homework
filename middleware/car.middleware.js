@@ -1,8 +1,23 @@
-const statusCodes = require('../constant/statusCodes.enum');
-const statusMessages = require('../status-messages/stastus.messages');
-const carService = require('../service/car.service');
+const { carService } = require('../service');
+const { statusCodesEnum } = require('../constant');
+const { statusMessages } = require('../status-messages');
+const { commonValidators, carValidators } = require('../validator');
 
 module.exports = {
+    isCarSearchQueryValid: (req, res, next) => {
+        try {
+            const { error } = carValidators.carObjectValidator.validate(req.query);
+
+            if (error) {
+                throw new Error(error.details[0].message);
+            }
+
+            next();
+        } catch (e) {
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+        }
+    },
+
     isCarExists: async (req, res, next) => {
         try {
             const cars = await carService.getCars(req.query);
@@ -13,7 +28,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -29,7 +44,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -47,21 +62,21 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
     isCarIdValid: (req, res, next) => {
         try {
-            const idRegex = /^[a-f\d]{24}$/i;
             const { carId } = req.params;
+            const { error } = commonValidators.mongodbIdValidator.validate(carId);
 
-            if (!carId.match(idRegex)) {
-                throw new Error(statusMessages.NOT_VALID_ID);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     }
 };

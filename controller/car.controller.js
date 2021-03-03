@@ -1,6 +1,6 @@
-const carService = require('../service/car.service');
-const statusCodes = require('../constant/statusCodes.enum');
-const statusMessages = require('../status-messages/stastus.messages');
+const { statusCodesEnum } = require('../constant');
+const { carService } = require('../service');
+const { statusMessages } = require('../status-messages');
 
 module.exports = {
     getCars: async (req, res) => {
@@ -9,7 +9,7 @@ module.exports = {
 
             res.json(cars);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -21,7 +21,7 @@ module.exports = {
 
             res.json(car);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -29,9 +29,9 @@ module.exports = {
         try {
             await carService.createCar(req.body);
 
-            res.status(statusCodes.CREATED).json(statusMessages.CAR_CREATED);
+            res.status(statusCodesEnum.CREATED).json(statusMessages.CAR_CREATED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -43,7 +43,7 @@ module.exports = {
 
             res.json(statusMessages.CAR_UPDATED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -55,7 +55,7 @@ module.exports = {
 
             res.json(statusMessages.CAR_DELETED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     }
 };

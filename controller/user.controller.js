@@ -1,6 +1,7 @@
-const userService = require('../service/user.service');
-const statusCodes = require('../constant/statusCodes.enum');
-const statusMessages = require('../status-messages/stastus.messages');
+const { statusCodesEnum } = require('../constant');
+const { passwordHasher } = require('../helper');
+const { userService } = require('../service');
+const { statusMessages } = require('../status-messages');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -9,7 +10,7 @@ module.exports = {
 
             res.json(users);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -21,17 +22,21 @@ module.exports = {
 
             res.json(user);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
     createUser: async (req, res) => {
         try {
-            await userService.createUser(req.body);
+            const { body, body: { password } } = req;
 
-            res.status(statusCodes.CREATED).json(statusMessages.USER_CREATED);
+            const hasPassword = await passwordHasher.hash(password);
+
+            await userService.createUser({ ...body, password: hasPassword });
+
+            res.status(statusCodesEnum.CREATED).json(statusMessages.USER_CREATED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -43,7 +48,7 @@ module.exports = {
 
             res.json(statusMessages.USER_UPDATED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     },
 
@@ -55,7 +60,7 @@ module.exports = {
 
             res.json(statusMessages.USER_DELETED);
         } catch (e) {
-            res.status(statusCodes.BAD_REQUEST).json(e.message);
+            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
         }
     }
 };

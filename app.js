@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const { MONGO_URL, PORT } = require('./config/config');
 const apiRouter = require('./router/api.router');
 
 const app = express();
@@ -12,12 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', apiRouter);
 
-app.listen(5000, () => {
-    console.log('Listen port 5000');
+app.listen(PORT, () => {
+    console.log(`Listen port ${PORT}`);
 });
 
 function _connectDB() {
-    mongoose.connect('mongodb://localhost:27017/homework-4', {
+    mongoose.connect(MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false

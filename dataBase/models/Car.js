@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const { dataBaseCollectionsEnum: { CAR } } = require('../../constant');
+
 const carScheme = new Schema({
     manufacturer: { type: String, required: true },
     model: { type: String, required: true },
@@ -9,4 +11,4 @@ const carScheme = new Schema({
     toJSON: { virtuals: true }
 });
 
-module.exports = model('Car', carScheme);
+module.exports = model(CAR, carScheme);

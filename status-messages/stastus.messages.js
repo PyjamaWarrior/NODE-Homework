@@ -18,5 +18,6 @@ module.exports = {
     USER_CREATED: 'User is successfully created!',
     USER_DELETED: 'User is successfully deleted!',
     USER_UPDATED: 'User is successfully updated!',
-    WEAK_PASSWORD: 'Weak password!'
+    WEAK_PASSWORD: 'Weak password!',
+    WRONG_EMAIL_OR_PASSWORD: 'Wrong email or password'
 };
