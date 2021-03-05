@@ -1,20 +1,24 @@
 const router = require('express').Router();
 
+const { JWT_SECRET } = require('../config/config');
+const { constants } = require('../constant');
 const { userController } = require('../controller');
-const { userMiddleware } = require('../middleware');
+const { authMiddleware, userMiddleware } = require('../middleware');
 
 router.get('/', userMiddleware.isUserSearchQueryValid, userController.getUsers);
 
 router.post('/', userMiddleware.isUserObjectValid, userMiddleware.isEmailTaken, userController.createUser);
 
-router.get('/:userId', userMiddleware.isUserIdValid, userMiddleware.isUserByIdExists, userController.getUserById);
-
-router.put('/:userId',
+router.use('/:userId',
+    authMiddleware.checkToken(constants.ACCESS_TOKEN, JWT_SECRET),
     userMiddleware.isUserIdValid,
-    userMiddleware.isUserObjectValid,
     userMiddleware.isUserByIdExists,
-    userController.updateUser);
+    userMiddleware.isUserAuthorized);
 
-router.delete('/:userId', userMiddleware.isUserIdValid, userMiddleware.isUserByIdExists, userController.deleteUser);
+router.get('/:userId', userController.getUserById);
+
+router.put('/:userId', userMiddleware.isUserObjectValid, userController.updateUser);
+
+router.delete('/:userId', userController.deleteUser);
 
 module.exports = router;

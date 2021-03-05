@@ -1,5 +1,4 @@
 const { User } = require('../dataBase/models');
-require('../dataBase/models/Car');
 
 module.exports = {
     getUsers: filterObject => User.find(filterObject),
