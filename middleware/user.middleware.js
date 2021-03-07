@@ -23,7 +23,7 @@ module.exports = {
         try {
             const { email, password } = req.body;
 
-            const [user] = await userService.getUsers({ email });
+            const user = await userService.getSingleUser({ email });
 
             if (!user) {
                 throw new Error(statusMessages.CANT_FIND_USER);
@@ -61,7 +61,7 @@ module.exports = {
         try {
             const { email } = req.body;
 
-            const [user] = await userService.getUsers({ email });
+            const user = await userService.getSingleUser({ email });
 
             if (user) {
                 throw new Error(statusMessages.USER_ALREADY_CREATED);

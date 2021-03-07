@@ -3,6 +3,8 @@ const { User } = require('../dataBase/models');
 module.exports = {
     getUsers: filterObject => User.find(filterObject),
 
+    getSingleUser: filterObject => User.findOne(filterObject),
+
     getUserById: userId => User.findById(userId),
 
     createUser: userObject => User.create(userObject),
