@@ -1,4 +1,5 @@
 const { statusCodesEnum } = require('../constant');
+const ErrorHandler = require('../error/ErrorHandler');
 const { passwordHasher } = require('../helper');
 const { userService } = require('../service');
 const { statusMessages } = require('../status-messages');
@@ -10,12 +11,16 @@ module.exports = {
             const { error } = userValidators.userSearchQueryValidator.validate(req.query);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
             }
 
             next();
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
@@ -26,7 +31,7 @@ module.exports = {
             const user = await userService.getSingleUser({ email });
 
             if (!user) {
-                throw new Error(statusMessages.CANT_FIND_USER);
+                throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND);
             }
 
             await passwordHasher.compare(password, user.password);
@@ -35,7 +40,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -46,14 +51,14 @@ module.exports = {
             const user = await userService.getUserById(userId);
 
             if (!user) {
-                throw new Error(statusMessages.CANT_FIND_USER);
+                throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND);
             }
 
             req.user = user;
 
             next();
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
@@ -64,12 +69,12 @@ module.exports = {
             const user = await userService.getSingleUser({ email });
 
             if (user) {
-                throw new Error(statusMessages.USER_ALREADY_CREATED);
+                throw new ErrorHandler(statusCodesEnum.CONFLICT, statusMessages.RECORD_ALREADY_EXISTS.customCode);
             }
 
             next();
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
@@ -78,12 +83,12 @@ module.exports = {
             const { params: { userId }, user: { _id } } = req;
 
             if (userId !== _id.toString()) {
-                throw new Error(statusMessages.UNAUTHORIZED);
+                throw new ErrorHandler(statusCodesEnum.UNAUTHORIZED, statusMessages.UNAUTHORIZED.customCode);
             }
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -92,12 +97,16 @@ module.exports = {
             const { error } = userValidators.userObjectValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
             }
 
             next();
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
@@ -107,12 +116,16 @@ module.exports = {
             const { error } = commonValidators.mongodbIdValidator.validate(userId);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
             }
 
             next();
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     }
 };

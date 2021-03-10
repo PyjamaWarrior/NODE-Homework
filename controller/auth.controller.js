@@ -3,7 +3,7 @@ const { authService } = require('../service');
 // const { statusMessages } = require('../status-messages');
 
 module.exports = {
-    authUser: async (req, res) => {
+    authUser: async (req, res, next) => {
         try {
             const { _id } = req.user;
             const tokens = tokenator();
@@ -12,11 +12,11 @@ module.exports = {
 
             res.json(tokens);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    refreshTokens: async (req, res) => {
+    refreshTokens: async (req, res, next) => {
         try {
             const { token, user: { _id } } = req;
             const tokens = tokenator();
@@ -27,7 +27,7 @@ module.exports = {
 
             res.json(tokens);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

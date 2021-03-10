@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 
-const { statusMessages } = require('../status-messages');
+const { statusCodesEnum: { UNAUTHORIZED } } = require('../constant');
+const ErrorHandler = require('../error/ErrorHandler');
+const { statusMessages: { WRONG_EMAIL_OR_PASSWORD } } = require('../status-messages');
 
 module.exports = {
     hash: password => bcrypt.hash(password, 12),
@@ -8,7 +10,7 @@ module.exports = {
         const isPasswordEquals = await bcrypt.compare(password, hashPassword);
 
         if (!isPasswordEquals) {
-            throw new Error(statusMessages.WRONG_EMAIL_OR_PASSWORD);
+            throw new ErrorHandler(UNAUTHORIZED, WRONG_EMAIL_OR_PASSWORD.customCode);
         }
     }
 };

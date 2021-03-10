@@ -16,6 +16,18 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', apiRouter);
 
+// eslint-disable-next-line no-unused-vars
+app.use('*', (err, req, res, next) => {
+    const { customCode, message, status } = err;
+
+    res
+        .status(status || 500)
+        .json({
+            code: customCode || 0,
+            message
+        });
+});
+
 app.listen(PORT, () => {
     console.log(`Listen port ${PORT}`);
 });

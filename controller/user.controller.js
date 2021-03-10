@@ -1,64 +1,70 @@
-const { statusCodesEnum } = require('../constant');
+const { emailActionsEnum, statusCodesEnum } = require('../constant');
 const { passwordHasher } = require('../helper');
-const { userService } = require('../service');
+const { mailService, userService } = require('../service');
 const { statusMessages } = require('../status-messages');
 
 module.exports = {
-    getUsers: async (req, res) => {
+    getUsers: async (req, res, next) => {
         try {
             const users = await userService.getUsers(req.query);
 
             res.json(users);
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    getUserById: (req, res) => {
+    getUserById: (req, res, next) => {
         try {
             const { user } = req;
 
             res.json(user);
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
-            const { body, body: { password } } = req;
+            const { body, body: { email, firstName, password } } = req;
 
             const hasPassword = await passwordHasher.hash(password);
 
             await userService.createUser({ ...body, password: hasPassword });
 
-            res.status(statusCodesEnum.CREATED).json(statusMessages.USER_CREATED);
+            await mailService.sendMail(email, emailActionsEnum.WELCOME, { userName: firstName });
+
+            res.status(statusCodesEnum.CREATED).json(statusMessages.RECORD_CREATED.customCode);
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         try {
             const { body, params: { userId } } = req;
 
             await userService.updateUser(userId, body);
 
-            res.json(statusMessages.USER_UPDATED);
+            res.json(statusMessages.RECORD_UPDATED.customCode);
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
 
-            await userService.deleteUser(userId);
+            const deletedUser = await userService.deleteUser(userId);
 
-            res.json(statusMessages.USER_DELETED);
+            const { email, firstName } = deletedUser;
+
+            await mailService.sendMail(email, emailActionsEnum.DELETE_USER, { userName: firstName });
+
+            res.json(statusMessages.RECORD_DELETED.customCode);
         } catch (e) {
-            res.status(statusCodesEnum.BAD_REQUEST).json(e.message);
+            next(e);
         }
     }
 };

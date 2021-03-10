@@ -1,26 +1,59 @@
 module.exports = {
-    CANT_FIND_CAR: 'Can`t find car!',
-    CANT_FIND_USER: 'Can`t find user!',
-    CANT_UPDATE_CAR: 'Can`t update car!',
-    CANT_UPDATE_USER: 'Can`t update user!',
-    CAR_ALREADY_CREATED: 'Car already created!',
-    CAR_CREATED: 'Car is successfully created!',
-    CAR_DELETED: 'Car is successfully deleted!',
-    CAR_UPDATED: 'Car is successfully updated!',
-    INVALID_AGE: 'Invalid age!',
-    INVALID_EMAIL: 'Invalid email format!',
-    INVALID_FIRSTNAME: 'Invalid firstname!',
-    INVALID_LASTNAME: 'Invalid lastname!',
-    INVALID_MANUFACTURER_NAME: 'Invalid manufacturer name!',
-    INVALID_MODEL_NAME: 'Invalid model name!',
-    INVALID_TOKEN: 'Invalid token!',
-    NOT_VALID_ID: 'Not valid ID!',
-    TOKEN_REQUIRED: 'Token is required!',
-    UNAUTHORIZED: 'Unauthorized',
-    USER_ALREADY_CREATED: 'User with this email is already exists!',
-    USER_CREATED: 'User is successfully created!',
-    USER_DELETED: 'User is successfully deleted!',
-    USER_UPDATED: 'User is successfully updated!',
-    WEAK_PASSWORD: 'Weak password!',
-    WRONG_EMAIL_OR_PASSWORD: 'Wrong email or password'
+    // 200 SUCCESS
+    RECORD_DELETED: {
+        customCode: 2001
+    },
+
+    RECORD_UPDATED: {
+        customCode: 2002
+    },
+
+    // 201 CREATED
+    RECORD_CREATED: {
+        customCode: 2011
+    },
+
+    // 400 BAD REQUEST
+    BAD_REQUEST: {
+        customCode: 4001
+    },
+
+    INVALID_MAIL_ACTION: {
+        customCode: 4002
+    },
+
+    JOI_VALIDATION_FAILED: {
+        customCode: 4003
+    },
+
+    NO_TOKEN: {
+        customCode: 4004
+    },
+
+    // WRONG_EMAIL_OF_PASSWORD: {
+    //     customCode: 4005
+    // },
+
+    // 401 UNAUTHORIZED
+    UNAUTHORIZED: {
+        customCode: 4011
+    },
+
+    WRONG_EMAIL_OR_PASSWORD: {
+        customCode: 4012
+    },
+
+    WRONG_TOKEN: {
+        customCode: 4013
+    },
+
+    // 404 NOT FOUND
+    RECORD_NOT_FOUND: {
+        customCode: 4041
+    },
+
+    // 409 CONFLICT
+    RECORD_ALREADY_EXISTS: {
+        customCode: 4091
+    },
 };

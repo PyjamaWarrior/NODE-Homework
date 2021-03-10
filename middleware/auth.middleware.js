@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const { constants } = require('../constant');
+const { constants, statusCodesEnum } = require('../constant');
+const ErrorHandler = require('../error/ErrorHandler');
 const { authService } = require('../service');
 const { statusMessages } = require('../status-messages');
 const { userValidators } = require('../validator/index');
@@ -11,19 +12,19 @@ module.exports = {
             const token = req.get(constants.AUTHORIZATION);
 
             if (!token) {
-                throw new Error(statusMessages.TOKEN_REQUIRED);
+                throw new ErrorHandler(statusCodesEnum.BAD_REQUEST, statusMessages.NO_TOKEN.customCode);
             }
 
             jwt.verify(token, jwtSecretWord, err => {
                 if (err) {
-                    throw new Error(statusMessages.INVALID_TOKEN);
+                    throw new ErrorHandler(statusCodesEnum.UNAUTHORIZED, statusMessages.WRONG_TOKEN.customCode);
                 }
             });
 
             const tokens = await authService.findTokens({ [tokenType]: token }).populate('_user_id');
 
             if (!tokens) {
-                throw new Error(statusMessages.INVALID_TOKEN);
+                throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND.customCode);
             }
 
             req.user = tokens._user_id;
@@ -31,7 +32,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -40,12 +41,16 @@ module.exports = {
             const { error } = userValidators.userAuthDataValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
             }
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };
