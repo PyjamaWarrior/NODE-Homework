@@ -34,7 +34,7 @@ module.exports = {
 
             await mailService.sendMail(email, emailActionsEnum.WELCOME, { userName: firstName });
 
-            res.status(statusCodesEnum.CREATED).json(statusMessages.RECORD_CREATED.customCode);
+            res.status(statusCodesEnum.CREATED).json({ code: statusMessages.RECORD_CREATED.customCode });
         } catch (e) {
             next(e);
         }
@@ -46,7 +46,7 @@ module.exports = {
 
             await userService.updateUser(userId, body);
 
-            res.json(statusMessages.RECORD_UPDATED.customCode);
+            res.json({ code: statusMessages.RECORD_UPDATED.customCode });
         } catch (e) {
             next(e);
         }
@@ -62,7 +62,7 @@ module.exports = {
 
             await mailService.sendMail(email, emailActionsEnum.DELETE_USER, { userName: firstName });
 
-            res.json(statusMessages.RECORD_DELETED.customCode);
+            res.json({ code: statusMessages.RECORD_DELETED.customCode });
         } catch (e) {
             next(e);
         }
