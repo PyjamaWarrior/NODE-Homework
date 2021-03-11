@@ -28,7 +28,7 @@ module.exports = {
         try {
             const { email, password } = req.body;
 
-            const user = await userService.getSingleUser({ email });
+            const user = await userService.getSingleUser({ email }).select('+password');
 
             if (!user) {
                 throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND);

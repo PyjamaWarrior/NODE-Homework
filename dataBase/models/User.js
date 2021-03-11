@@ -7,7 +7,7 @@ const userScheme = new Schema({
     lastName: { type: String, required: true },
     age: { type: Number, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, select: false, required: true }
 }, {
     timestamps: true,
     toObject: { virtuals: true },
