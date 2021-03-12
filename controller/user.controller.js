@@ -47,9 +47,19 @@ module.exports = {
 
     updateUser: async (req, res, next) => {
         try {
-            const { body, params: { userId } } = req;
+            const {
+                avatar,
+                body,
+                params: { userId },
+                user: { avatar: existingAvatarPath }
+            } = req;
 
-            await userService.updateUser(userId, body);
+            if (avatar) {
+                const updatedAvatar = await fileHelper.updateUserAvatar(avatar, existingAvatarPath, avatar.name, userId);
+                await userService.updateUser(userId, { ...body, avatar: updatedAvatar });
+            } else {
+                await userService.updateUser(userId, body);
+            }
 
             res.json({ code: statusMessages.RECORD_UPDATED.customCode });
         } catch (e) {

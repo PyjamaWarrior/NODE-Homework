@@ -13,6 +13,5 @@ module.exports = Joi.object({
         .max(255),
     age: Joi.number().integer().min(1),
     email: Joi.string().regex(regExpEnum.EMAIL_REGEXP),
-    password: Joi.string().regex(regExpEnum.PASSWORD_REGEXP),
     _cars: Joi.array().items(Joi.string().alphanum().length(24))
 });

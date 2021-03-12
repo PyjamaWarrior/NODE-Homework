@@ -2,6 +2,7 @@ module.exports = {
     ACCESS_TOKEN: 'access_token',
     AUTHORIZATION: 'Authorization',
     REFRESH_TOKEN: 'refresh_token',
+    CREATE: 'create',
     DOC: 'Document',
     IMG: 'Image',
     DOCS_MAX_SIZE: 5 * 1024 * 1024, // 5MB
@@ -20,5 +21,6 @@ module.exports = {
         'image/png',
         'image/tiff',
         'image/webp'
-    ]
+    ],
+    UPDATE: 'update'
 };

@@ -10,16 +10,40 @@ const {
 } = require('../constant/foldersNames.enum');
 const { fileService } = require('../service');
 
+const pathBuilder = (itemName, itemId) => {
+    const pathWithoutStatic = path.join(USERS, `${itemId}`, IMAGES);
+    const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
+    const fileExtension = itemName.split('.').pop();
+    const fileName = `${uuid()}.${fileExtension}`;
+    const finalFilePath = path.join(fileDir, fileName);
+    const uploadPath = path.join(pathWithoutStatic, fileName);
+
+    return {
+        fileDir, finalFilePath, uploadPath
+    };
+};
+
 module.exports = {
     uploadUserAvatar: async (avatar, itemName, itemId) => {
-        const pathWithoutStatic = path.join(USERS, `${itemId}`, IMAGES);
-        const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
-        const fileExtension = itemName.split('.').pop();
-        const fileName = `${uuid()}.${fileExtension}`;
-        const finalFilePath = path.join(fileDir, fileName);
-        const uploadPath = path.join(pathWithoutStatic, fileName);
+        const { fileDir, finalFilePath, uploadPath } = pathBuilder(itemName, itemId);
 
         await fs.mkdir(fileDir, { recursive: true });
+        await avatar.mv(finalFilePath);
+
+        return uploadPath;
+    },
+
+    updateUserAvatar: async (avatar, existingAvatarPath, itemName, itemId) => {
+        const { fileDir, finalFilePath, uploadPath } = pathBuilder(itemName, itemId);
+
+        if (!existingAvatarPath) {
+            await fs.mkdir(fileDir, { recursive: true });
+        } else {
+            const oldAvatarPath = path.join(process.cwd(), STATIC, existingAvatarPath);
+
+            await fs.unlink(oldAvatarPath);
+        }
+
         await avatar.mv(finalFilePath);
 
         return uploadPath;

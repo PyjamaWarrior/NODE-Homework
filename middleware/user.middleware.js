@@ -92,9 +92,27 @@ module.exports = {
         }
     },
 
-    isUserObjectValid: (req, res, next) => {
+    onUserCreate: (req, res, next) => {
         try {
-            const { error } = userValidators.userObjectValidator.validate(req.body);
+            const { error } = userValidators.createUserValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    onUserUpdate: (req, res, next) => {
+        try {
+            const { error } = userValidators.updateUserValidator.validate(req.body);
 
             if (error) {
                 throw new ErrorHandler(

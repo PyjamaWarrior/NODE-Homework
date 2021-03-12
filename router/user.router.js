@@ -10,7 +10,7 @@ router.get('/', userMiddleware.isUserSearchQueryValid, userController.getUsers);
 router.post('/',
     fileMiddleware.checkFile,
     fileMiddleware.checkAvatar,
-    userMiddleware.isUserObjectValid,
+    userMiddleware.onUserCreate,
     userMiddleware.isEmailTaken,
     userController.createUser);
 
@@ -22,7 +22,11 @@ router.use('/:userId',
 
 router.get('/:userId', userController.getUserById);
 
-router.put('/:userId', userMiddleware.isUserObjectValid, userController.updateUser);
+router.put('/:userId',
+    fileMiddleware.checkFile,
+    fileMiddleware.checkAvatar,
+    userMiddleware.onUserUpdate,
+    userController.updateUser);
 
 router.delete('/:userId', userController.deleteUser);
 

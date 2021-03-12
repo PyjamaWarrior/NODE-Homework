@@ -26,7 +26,7 @@ module.exports = {
 
     createCar: async (req, res, next) => {
         try {
-            const { body, docs, photos } = req;
+            const { body, docs, images } = req;
 
             const car = await carService.createCar(body);
 
@@ -34,8 +34,8 @@ module.exports = {
                 await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
             }
 
-            if (photos.length) {
-                await fileHelper.carFileUploader(car._id, photos, IMAGES, constants.IMG);
+            if (images.length) {
+                await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
             }
 
             res.status(statusCodesEnum.CREATED).json({ code: statusMessages.RECORD_CREATED.customCode });
