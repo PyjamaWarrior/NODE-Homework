@@ -17,7 +17,7 @@ router.use('/:carId',
 
 router.get('/:carId', carController.getCarById);
 
-router.put('/:carId', carMiddleware.isCarObjectValid, carController.updateCar);
+router.put('/:carId', fileMiddleware.checkFile, carMiddleware.isCarObjectValid, carController.updateCar);
 
 router.delete('/:carId', carController.deleteCar);
 

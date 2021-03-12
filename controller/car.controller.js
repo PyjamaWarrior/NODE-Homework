@@ -46,9 +46,22 @@ module.exports = {
 
     updateCar: async (req, res, next) => {
         try {
-            const { body, params: { carId } } = req;
+            const {
+                body,
+                docs,
+                images,
+                params: { carId }
+            } = req;
 
-            await carService.updateCar(carId, body);
+            const car = await carService.updateCar(carId, body);
+
+            if (docs.length) {
+                await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
+            }
+
+            if (images.length) {
+                await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
+            }
 
             res.json({ code: statusMessages.RECORD_UPDATED.customCode });
         } catch (e) {
