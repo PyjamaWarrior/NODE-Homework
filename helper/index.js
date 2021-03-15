@@ -1,5 +1,6 @@
 module.exports = {
     fileHelper: require('./file.helper'),
-    tokenator: require('./tokenator'),
-    passwordHasher: require('./password.helper')
+    passwordHasher: require('./password.helper'),
+    queryBuildHelper: require('./queryBuild.helper'),
+    tokenator: require('./tokenator')
 };

@@ -45,13 +45,11 @@ module.exports = {
 
     checkAvatar: (req, res, next) => {
         try {
-            if (req.images) {
-                if (req.images.length > 1) {
-                    throw new ErrorHandler(BAD_REQUEST, statusMessages.PHOTO_LIMIT.customCode);
-                }
-
-                [req.avatar] = req.images;
+            if (req.images && req.images.length > 1) {
+                throw new ErrorHandler(BAD_REQUEST, statusMessages.PHOTO_LIMIT.customCode);
             }
+
+            [req.avatar] = req.images;
 
             next();
         } catch (e) {

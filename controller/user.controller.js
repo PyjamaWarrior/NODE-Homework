@@ -6,7 +6,7 @@ const { statusMessages } = require('../status-messages');
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await userService.getUsers(req.query).populate('_cars');
+            const users = await userService.getUsers(req.query);
 
             res.json(users);
         } catch (e) {

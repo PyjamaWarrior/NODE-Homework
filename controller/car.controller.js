@@ -30,11 +30,11 @@ module.exports = {
 
             const car = await carService.createCar(body);
 
-            if (docs.length) {
+            if (docs && docs.length) {
                 await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
             }
 
-            if (images.length) {
+            if (images && images.length) {
                 await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
             }
 
@@ -55,11 +55,11 @@ module.exports = {
 
             const car = await carService.updateCar(carId, body);
 
-            if (docs.length) {
+            if (docs && docs.length) {
                 await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
             }
 
-            if (images.length) {
+            if (images && images.length) {
                 await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
             }
 

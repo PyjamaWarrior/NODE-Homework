@@ -6,24 +6,6 @@ const { statusMessages } = require('../status-messages');
 const { commonValidators, userValidators } = require('../validator');
 
 module.exports = {
-    isUserSearchQueryValid: (req, res, next) => {
-        try {
-            const { error } = userValidators.userSearchQueryValidator.validate(req.query);
-
-            if (error) {
-                throw new ErrorHandler(
-                    statusCodesEnum.BAD_REQUEST,
-                    statusMessages.JOI_VALIDATION_FAILED.customCode,
-                    error.details[0].message
-                );
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     isUserExists: async (req, res, next) => {
         try {
             const { email, password } = req.body;

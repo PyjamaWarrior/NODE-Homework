@@ -2,27 +2,9 @@ const { statusCodesEnum } = require('../constant');
 const ErrorHandler = require('../error/ErrorHandler');
 const { carService } = require('../service');
 const { statusMessages } = require('../status-messages');
-const { commonValidators, carValidator: { carValidator } } = require('../validator');
+const { commonValidators, carValidator } = require('../validator');
 
 module.exports = {
-    isCarSearchQueryValid: (req, res, next) => {
-        try {
-            const { error } = carValidator.validate(req.query);
-
-            if (error) {
-                throw new ErrorHandler(
-                    statusCodesEnum.BAD_REQUEST,
-                    statusMessages.JOI_VALIDATION_FAILED.customCode,
-                    error.details[0].message
-                );
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     isCarAlreadyExists: async (req, res, next) => {
         try {
             const { manufacturer, model } = req.body;
@@ -57,9 +39,27 @@ module.exports = {
         }
     },
 
-    isCarObjectValid: (req, res, next) => {
+    onCarCreate: (req, res, next) => {
         try {
-            const { error } = carValidator.validate(req.body);
+            const { error } = carValidator.createCarValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(
+                    statusCodesEnum.BAD_REQUEST,
+                    statusMessages.JOI_VALIDATION_FAILED.customCode,
+                    error.details[0].message
+                );
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    onCarUpdate: (req, res, next) => {
+        try {
+            const { error } = carValidator.updateCarValidator.validate(req.body);
 
             if (error) {
                 throw new ErrorHandler(

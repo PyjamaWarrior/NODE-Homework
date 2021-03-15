@@ -5,7 +5,7 @@ const { constants } = require('../constant');
 const { userController } = require('../controller');
 const { authMiddleware, fileMiddleware, userMiddleware } = require('../middleware');
 
-router.get('/', userMiddleware.isUserSearchQueryValid, userController.getUsers);
+router.get('/', userController.getUsers);
 
 router.post('/',
     fileMiddleware.checkFile,

@@ -3,11 +3,11 @@ const router = require('express').Router();
 const { carController } = require('../controller');
 const { carMiddleware, fileMiddleware } = require('../middleware');
 
-router.get('/', carMiddleware.isCarSearchQueryValid, carController.getCars);
+router.get('/', carController.getCars);
 
 router.post('/',
     fileMiddleware.checkFile,
-    carMiddleware.isCarObjectValid,
+    carMiddleware.onCarCreate,
     carMiddleware.isCarAlreadyExists,
     carController.createCar);
 
@@ -17,7 +17,7 @@ router.use('/:carId',
 
 router.get('/:carId', carController.getCarById);
 
-router.put('/:carId', fileMiddleware.checkFile, carMiddleware.isCarObjectValid, carController.updateCar);
+router.put('/:carId', fileMiddleware.checkFile, carMiddleware.onCarUpdate, carController.updateCar);
 
 router.delete('/:carId', carController.deleteCar);
 
