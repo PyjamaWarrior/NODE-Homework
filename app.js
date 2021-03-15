@@ -7,8 +7,8 @@ const path = require('path');
 dotenv.config();
 
 const { MONGO_URL, PORT } = require('./config/config');
-const apiRouter = require('./router/api.router');
 const { STATIC } = require('./constant/foldersNames.enum');
+const apiRouter = require('./router/api.router');
 
 const app = express();
 

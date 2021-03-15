@@ -10,19 +10,6 @@ const {
 } = require('../constant/foldersNames.enum');
 const { fileService } = require('../service');
 
-const pathBuilder = (itemName, itemId) => {
-    const pathWithoutStatic = path.join(USERS, `${itemId}`, IMAGES);
-    const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
-    const fileExtension = itemName.split('.').pop();
-    const fileName = `${uuid()}.${fileExtension}`;
-    const finalFilePath = path.join(fileDir, fileName);
-    const uploadPath = path.join(pathWithoutStatic, fileName);
-
-    return {
-        fileDir, finalFilePath, uploadPath
-    };
-};
-
 module.exports = {
     uploadUserAvatar: async (avatar, itemName, itemId) => {
         const { fileDir, finalFilePath, uploadPath } = pathBuilder(itemName, itemId);
@@ -73,7 +60,19 @@ module.exports = {
         const pathWithoutStatic = path.join(folderType, `${id}`);
         const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
 
-        // await fs.rmdir(fileDir, { recursive: true }); // DON`T RABOTAET
         await fs.remove(fileDir);
     }
 };
+
+function pathBuilder(itemName, itemId) {
+    const pathWithoutStatic = path.join(USERS, `${itemId}`, IMAGES);
+    const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
+    const fileExtension = itemName.split('.').pop();
+    const fileName = `${uuid()}.${fileExtension}`;
+    const finalFilePath = path.join(fileDir, fileName);
+    const uploadPath = path.join(pathWithoutStatic, fileName);
+
+    return {
+        fileDir, finalFilePath, uploadPath
+    };
+}
