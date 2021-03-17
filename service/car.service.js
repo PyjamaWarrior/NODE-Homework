@@ -56,11 +56,11 @@ module.exports = {
 
     getSingleCar: filterObject => Car.findOne(filterObject),
 
-    getCarById: CarId => Car.findById(CarId),
+    getCarById: carId => Car.findById(carId),
 
-    createCar: CarObject => Car.create(CarObject),
+    createCar: carObject => Car.create(carObject),
 
-    updateCar: (CarId, updateObject) => Car.findByIdAndUpdate(CarId, { $set: updateObject }),
+    updateCar: (carId, updateObject) => Car.findByIdAndUpdate(carId, { $set: updateObject }),
 
-    deleteCar: CarId => Car.findByIdAndRemove(CarId)
+    deleteCar: carId => Car.findByIdAndRemove(carId)
 };
