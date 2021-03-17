@@ -29,12 +29,12 @@ module.exports = {
             const { avatar, body, body: { email, firstName, password } } = req;
 
             const hasPassword = await passwordHasher.hash(password);
-            const user = await userService.createUser({ ...body, password: hasPassword });
+            const { id } = await userService.createUser({ ...body, password: hasPassword });
 
             if (avatar) {
-                const uploadPath = await fileHelper.uploadUserAvatar(avatar, avatar.name, user._id);
+                const uploadPath = await fileHelper.uploadUserAvatar(avatar, avatar.name, id);
 
-                await userService.updateUser(user._id, { avatar: uploadPath });
+                await userService.updateUser(id, { avatar: uploadPath });
             }
 
             await mailService.sendMail(email, emailActionsEnum.WELCOME, { userName: firstName });
@@ -69,13 +69,10 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         try {
-            const { userId } = req.params;
+            const { params: { userId }, user: { email, id, firstName } } = req;
 
-            const deletedUser = await userService.deleteUser(userId);
-
-            const { email, _id, firstName } = deletedUser;
-
-            await fileHelper.filesDeleter(_id, USERS);
+            await userService.deleteUser(userId);
+            await fileHelper.filesDeleter(id, USERS);
             await mailService.sendMail(email, emailActionsEnum.DELETE_USER, { userName: firstName });
 
             res.json({ code: statusMessages.RECORD_DELETED.customCode });

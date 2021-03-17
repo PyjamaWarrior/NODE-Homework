@@ -78,7 +78,7 @@ module.exports = {
     isCarIdValid: (req, res, next) => {
         try {
             const { carId } = req.params;
-            const { error } = commonValidators.mongodbIdValidator.validate(carId);
+            const { error } = commonValidators.idValidator.validate(carId);
 
             if (error) {
                 throw new ErrorHandler(

@@ -1,19 +1,74 @@
-const { Schema, model } = require('mongoose');
+// const { DataTypes } = require('sequelize');
+//
+// module.exports = client => {
+//     const User = client.define(
+//         'User',
+//         {
+//             id: {
+//                 type: DataTypes.INTEGER,
+//                 primaryKey: true,
+//                 autoIncrement: true,
+//                 allowNull: false
+//             },
+//             age: { type: DataTypes.INTEGER, allowNull: false },
+//             email: { type: DataTypes.STRING, allowNull: false },
+//             firstName: { type: DataTypes.STRING, allowNull: false },
+//             lastName: { type: DataTypes.STRING, allowNull: false },
+//             password: { type: DataTypes.STRING, allowNull: false }
+//         },
+//         {
+//             tableName: 'users',
+//             timestamps: false
+//         }
+//     );
+//
+//     return User;
+// };
+const { DataTypes, Model } = require('sequelize');
 
-const { dataBaseCollectionsEnum: { CAR, USER } } = require('../../constant');
+const { sequelize } = require('../index');
 
-const userScheme = new Schema({
-    age: { type: Number, required: true },
-    avatar: { type: String },
-    email: { type: String, required: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    password: { type: String, select: false, required: true },
-    _cars: [{ type: Schema.Types.ObjectId, ref: CAR }]
-}, {
-    timestamps: true,
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true }
-});
+class User extends Model {}
 
-module.exports = model(USER, userScheme);
+User.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+
+        age: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    },
+    {
+        sequelize,
+        paranoid: true,
+        tableName: 'users'
+    }
+);
+
+module.exports = User;

@@ -10,7 +10,7 @@ module.exports = {
         try {
             const { email, password } = req.body;
 
-            const user = await userService.getSingleUser({ email }).select('+password');
+            const user = await userService.getSingleUser({ email });
 
             if (!user) {
                 throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND.customCode);
@@ -30,7 +30,7 @@ module.exports = {
         try {
             const { userId } = req.params;
 
-            const user = await userService.getUserById(userId).populate('_cars');
+            const user = await userService.getUserById(userId);
 
             if (!user) {
                 throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND.customCode);
@@ -62,9 +62,9 @@ module.exports = {
 
     isUserAuthorized: (req, res, next) => {
         try {
-            const { params: { userId }, user: { _id } } = req;
+            const { params: { userId }, user: { id } } = req;
 
-            if (userId !== _id.toString()) {
+            if (userId !== id.toString()) {
                 throw new ErrorHandler(statusCodesEnum.UNAUTHORIZED, statusMessages.UNAUTHORIZED.customCode);
             }
 
@@ -113,7 +113,7 @@ module.exports = {
     isUserIdValid: (req, res, next) => {
         try {
             const { userId } = req.params;
-            const { error } = commonValidators.mongodbIdValidator.validate(userId);
+            const { error } = commonValidators.idValidator.validate(userId);
 
             if (error) {
                 throw new ErrorHandler(

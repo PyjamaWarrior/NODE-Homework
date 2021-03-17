@@ -1,6 +1,6 @@
 const { constants, foldersNamesEnum: { CARS, DOCS, IMAGES }, statusCodesEnum } = require('../constant');
 const { fileHelper } = require('../helper');
-const { carService, fileService } = require('../service');
+const { carService } = require('../service');
 const { statusMessages } = require('../status-messages');
 
 module.exports = {
@@ -28,14 +28,14 @@ module.exports = {
         try {
             const { body, docs, images } = req;
 
-            const car = await carService.createCar(body);
+            const { id } = await carService.createCar(body);
 
             if (docs && docs.length) {
-                await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
+                await fileHelper.carFileUploader(id, docs, DOCS, constants.DOC);
             }
 
             if (images && images.length) {
-                await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
+                await fileHelper.carFileUploader(id, images, IMAGES, constants.IMG);
             }
 
             res.status(statusCodesEnum.CREATED).json({ code: statusMessages.RECORD_CREATED.customCode });
@@ -48,19 +48,20 @@ module.exports = {
         try {
             const {
                 body,
+                car: { id },
                 docs,
                 images,
                 params: { carId }
             } = req;
 
-            const car = await carService.updateCar(carId, body);
+            await carService.updateCar(carId, body);
 
             if (docs && docs.length) {
-                await fileHelper.carFileUploader(car._id, docs, DOCS, constants.DOC);
+                await fileHelper.carFileUploader(id, docs, DOCS, constants.DOC);
             }
 
             if (images && images.length) {
-                await fileHelper.carFileUploader(car._id, images, IMAGES, constants.IMG);
+                await fileHelper.carFileUploader(id, images, IMAGES, constants.IMG);
             }
 
             res.json({ code: statusMessages.RECORD_UPDATED.customCode });
@@ -71,12 +72,11 @@ module.exports = {
 
     deleteCar: async (req, res, next) => {
         try {
-            const { carId } = req.params;
+            const { car: { id }, params: { carId } } = req;
 
-            const deletedCar = await carService.deleteCar(carId);
-
-            await fileHelper.filesDeleter(deletedCar._id, CARS);
-            await fileService.deleteCarFile(deletedCar._id);
+            await carService.deleteCar(carId);
+            await fileHelper.filesDeleter(id, CARS);
+            // await fileService.deleteCarFile(id);
 
             res.json({ code: statusMessages.RECORD_DELETED.customCode });
         } catch (e) {

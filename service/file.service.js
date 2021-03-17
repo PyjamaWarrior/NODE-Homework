@@ -1,4 +1,4 @@
-const { CarFile } = require('../dataBase/models');
+const { CarFile } = require('../dataBase/models-mongo');
 
 module.exports = {
     createCarFile: CarObject => CarFile.create(CarObject),

@@ -1,12 +1,68 @@
-const { Schema, model } = require('mongoose');
+// const { DataTypes } = require('sequelize');
+//
+// module.exports = client => {
+//     const Car = client.define(
+//         'Car',
+//         {
+//             id: {
+//                 type: DataTypes.INTEGER,
+//                 primaryKey: true,
+//                 autoIncrement: true,
+//                 allowNull: false
+//             },
+//             color: { type: DataTypes.STRING, allowNull: false },
+//             manufacturer: { type: DataTypes.STRING, allowNull: false },
+//             model: { type: DataTypes.STRING, allowNull: false },
+//             price: { type: DataTypes.DECIMAL, allowNull: false }
+//         },
+//         {
+//             tableName: 'cars',
+//             timestamps: false
+//         }
+//     );
+//
+//     return Car;
+// };
+const { DataTypes, Model } = require('sequelize');
 
-const carScheme = new Schema({
-    color: { type: String, required: true },
-    manufacturer: { type: String, required: true },
-    model: { type: String, required: true },
-    price: { type: Number, required: true }
-}, {
-    timestamps: true
-});
+const { sequelize } = require('../index');
 
-module.exports = model('Car', carScheme);
+class Car extends Model {}
+
+Car.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+
+        color: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+
+        manufacturer: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        model: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        price: {
+            type: DataTypes.DECIMAL,
+            allowNull: false
+        }
+    },
+    {
+        sequelize,
+        paranoid: true,
+        tableName: 'cars'
+    }
+);
+
+module.exports = Car;

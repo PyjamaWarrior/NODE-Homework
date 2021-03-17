@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const { JWT_SECRET } = require('../config/config');
-const { constants } = require('../constant');
+// const { JWT_SECRET } = require('../config/config');
+// const { constants } = require('../constant');
 const { userController } = require('../controller');
-const { authMiddleware, fileMiddleware, userMiddleware } = require('../middleware');
+const { fileMiddleware, userMiddleware } = require('../middleware');
 
 router.get('/', userController.getUsers);
 
@@ -15,7 +15,7 @@ router.post('/',
     userController.createUser);
 
 router.use('/:userId',
-    authMiddleware.checkToken(constants.ACCESS_TOKEN, JWT_SECRET),
+//     authMiddleware.checkToken(constants.ACCESS_TOKEN, JWT_SECRET),
     userMiddleware.isUserIdValid,
     userMiddleware.isUserByIdExists,
     userMiddleware.isUserAuthorized);

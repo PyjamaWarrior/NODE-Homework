@@ -1,4 +1,4 @@
-const { O_Auth } = require('../dataBase/models');
+const { O_Auth } = require('../dataBase/models-mongo');
 
 module.exports = {
     findTokens: token => O_Auth.findOne(token),

@@ -3,7 +3,9 @@ module.exports = {
     AUTHORIZATION: 'Authorization',
     REFRESH_TOKEN: 'refresh_token',
     CREATE: 'create',
+    DIALECT: 'mysql',
     DOC: 'Document',
+    HOST: 'localhost',
     IMG: 'Image',
     DOCS_MAX_SIZE: 5 * 1024 * 1024, // 5MB
     IMG_MAX_SIZE: 2 * 1024 * 1024, // 2MB
