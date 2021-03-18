@@ -21,13 +21,13 @@ module.exports = {
                 }
             });
 
-            const tokens = await authService.findTokens({ [tokenType]: token }).populate('_user_id');
+            const userWithToken = await authService.getUserWithTokenPair({ [tokenType]: token });
 
-            if (!tokens) {
+            if (!userWithToken) {
                 throw new ErrorHandler(statusCodesEnum.NOT_FOUND, statusMessages.RECORD_NOT_FOUND.customCode);
             }
 
-            req.user = tokens._user_id;
+            req.user = userWithToken.dataValues;
 
             req.token = token;
 

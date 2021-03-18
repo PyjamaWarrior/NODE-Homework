@@ -1,9 +1,14 @@
-const { O_Auth } = require('../dataBase/models-mongo');
+const { OAuth, User } = require('../dataBase/models');
 
 module.exports = {
-    findTokens: token => O_Auth.findOne(token),
+    createTokens: tokensObject => OAuth.create(tokensObject),
 
-    createTokens: tokensObject => O_Auth.create(tokensObject),
+    getUserWithTokenPair: where => User.findOne({
+        attributes: {
+            exclude: 'password'
+        },
+        include: { model: OAuth, where }
+    }),
 
-    deleteTokens: tokensObject => O_Auth.deleteOne(tokensObject)
+    deleteTokens: tokensObject => OAuth.destroy({ where: tokensObject })
 };

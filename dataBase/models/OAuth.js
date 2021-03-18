@@ -27,12 +27,10 @@
 const { DataTypes, Model } = require('sequelize');
 
 const { sequelize } = require('../index');
-const OAuth = require('./OAuth');
 
-class User extends Model {
-}
+class OAuth extends Model {}
 
-User.init(
+OAuth.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -40,43 +38,27 @@ User.init(
             primaryKey: true
         },
 
-        age: {
+        access_token: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        refresh_token: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        user_id: {
             type: DataTypes.INTEGER,
+            foreignKey: true,
             allowNull: false
         },
-
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }
     },
     {
         sequelize,
-        paranoid: true,
-        tableName: 'users'
+        tableName: 'oauth',
+        timestamps: false
     }
 );
 
-User.hasMany(OAuth, {
-    foreignKey: 'user_id',
-    onDelete: 'cascade',
-    onUpdate: 'cascade'
-});
-
-module.exports = User;
+module.exports = OAuth;

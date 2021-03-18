@@ -31,7 +31,7 @@ app.use('*', (err, req, res, next) => {
 });
 
 (async () => {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     app.listen(PORT, () => {
         console.log(`Listen port ${PORT}`);
     });

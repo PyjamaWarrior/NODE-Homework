@@ -45,7 +45,7 @@ const { DATA_BASE_NAME, DATA_BASE_PASSWORD, DATA_BASE_USER } = require('../confi
 const { DIALECT, HOST } = require('../constant/constants');
 
 module.exports.sequelize = new Sequelize(DATA_BASE_NAME, DATA_BASE_USER, DATA_BASE_PASSWORD, {
-    host: HOST,
-    dialect: DIALECT,
+    host: HOST, // 'localhost'
+    dialect: DIALECT, // 'mysql'
     logging: false
 });
