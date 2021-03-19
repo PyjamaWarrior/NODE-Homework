@@ -45,6 +45,10 @@ User.init(
             allowNull: false
         },
 
+        avatar: {
+            type: DataTypes.STRING
+        },
+
         firstName: {
             type: DataTypes.STRING,
             allowNull: false
@@ -68,7 +72,6 @@ User.init(
     },
     {
         sequelize,
-        paranoid: true,
         tableName: 'users'
     }
 );

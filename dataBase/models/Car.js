@@ -26,6 +26,7 @@
 const { DataTypes, Model } = require('sequelize');
 
 const { sequelize } = require('../index');
+const CarFile = require('./CarFile');
 
 class Car extends Model {}
 
@@ -60,9 +61,14 @@ Car.init(
     },
     {
         sequelize,
-        paranoid: true,
         tableName: 'cars'
     }
 );
+
+Car.hasMany(CarFile, {
+    foreignKey: 'car_id',
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+});
 
 module.exports = Car;

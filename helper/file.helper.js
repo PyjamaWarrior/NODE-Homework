@@ -12,7 +12,7 @@ const { fileService } = require('../service');
 
 module.exports = {
     uploadUserAvatar: async (avatar, itemName, itemId) => {
-        const { fileDir, finalFilePath, uploadPath } = pathBuilder(itemName, itemId);
+        const { fileDir, finalFilePath, uploadPath } = _pathBuilder(itemName, itemId);
 
         await fs.mkdir(fileDir, { recursive: true });
         await avatar.mv(finalFilePath);
@@ -21,7 +21,7 @@ module.exports = {
     },
 
     updateUserAvatar: async (avatar, existingAvatarPath, itemName, itemId) => {
-        const { fileDir, finalFilePath, uploadPath } = pathBuilder(itemName, itemId);
+        const { fileDir, finalFilePath, uploadPath } = _pathBuilder(itemName, itemId);
 
         if (!existingAvatarPath) {
             await fs.mkdir(fileDir, { recursive: true });
@@ -50,7 +50,7 @@ module.exports = {
 
             file.mv(finalFilePath);
 
-            return fileService.createCarFile({ file: uploadPath, type: itemType, _car_id: carId });
+            return fileService.createCarFile({ file: uploadPath, type: itemType, car_id: carId });
         });
 
         await Promise.allSettled(promises);
@@ -64,7 +64,7 @@ module.exports = {
     }
 };
 
-function pathBuilder(itemName, itemId) {
+function _pathBuilder(itemName, itemId) {
     const pathWithoutStatic = path.join(USERS, `${itemId}`, IMAGES);
     const fileDir = path.join(process.cwd(), STATIC, pathWithoutStatic);
     const fileExtension = itemName.split('.').pop();

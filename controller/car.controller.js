@@ -1,6 +1,6 @@
 const { constants, foldersNamesEnum: { CARS, DOCS, IMAGES }, statusCodesEnum } = require('../constant');
 const { fileHelper } = require('../helper');
-const { carService } = require('../service');
+const { carService, fileService } = require('../service');
 const { statusMessages } = require('../status-messages');
 
 module.exports = {
@@ -76,7 +76,7 @@ module.exports = {
 
             await carService.deleteCar(carId);
             await fileHelper.filesDeleter(id, CARS);
-            // await fileService.deleteCarFile(id);
+            await fileService.deleteCarFile(id);
 
             res.json({ code: statusMessages.RECORD_DELETED.customCode });
         } catch (e) {

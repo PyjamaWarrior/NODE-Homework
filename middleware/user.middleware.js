@@ -29,6 +29,7 @@ module.exports = {
     isUserByIdExists: async (req, res, next) => {
         try {
             const { userId } = req.params;
+            console.log(userId);
 
             const user = await userService.getUserById(userId);
 
