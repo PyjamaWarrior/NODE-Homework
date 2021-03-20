@@ -1,0 +1,12 @@
+.common {
+    background-color: mediumaquamarine;
+    color: aliceblue;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.content {
+    color: mediumaquamarine;
+    text-align: center;
+}
