@@ -21,7 +21,6 @@ module.exports = {
             const tokens = tokenator();
 
             await authService.deleteTokens({ refresh_token: token });
-
             await authService.createTokens({ ...tokens, _user_id: _id });
 
             res.json(tokens);
