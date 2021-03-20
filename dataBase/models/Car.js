@@ -25,6 +25,7 @@
 // };
 const { DataTypes, Model } = require('sequelize');
 
+const { CARS } = require('../../constant/dataBaseTables.enum');
 const { sequelize } = require('../index');
 const CarFile = require('./CarFile');
 
@@ -61,7 +62,7 @@ Car.init(
     },
     {
         sequelize,
-        tableName: 'cars'
+        tableName: CARS
     }
 );
 

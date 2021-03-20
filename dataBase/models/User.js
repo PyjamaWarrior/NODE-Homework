@@ -26,6 +26,7 @@
 // };
 const { DataTypes, Model } = require('sequelize');
 
+const { USERS } = require('../../constant/dataBaseTables.enum');
 const { sequelize } = require('../index');
 const OAuth = require('./OAuth');
 
@@ -72,7 +73,7 @@ User.init(
     },
     {
         sequelize,
-        tableName: 'users'
+        tableName: USERS
     }
 );
 

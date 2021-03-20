@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 
+const { CAR_FILES } = require('../../constant/dataBaseTables.enum');
 const { sequelize } = require('../index');
 
 class CarFile extends Model {
@@ -32,7 +33,7 @@ CarFile.init(
     },
     {
         sequelize,
-        tableName: 'car_files'
+        tableName: CAR_FILES
     }
 );
 

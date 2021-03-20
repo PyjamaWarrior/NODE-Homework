@@ -26,6 +26,7 @@
 // };
 const { DataTypes, Model } = require('sequelize');
 
+const { O_AUTH } = require('../../constant/dataBaseTables.enum');
 const { sequelize } = require('../index');
 
 class OAuth extends Model {}
@@ -56,7 +57,7 @@ OAuth.init(
     },
     {
         sequelize,
-        tableName: 'oauth',
+        tableName: O_AUTH,
         timestamps: false
     }
 );
